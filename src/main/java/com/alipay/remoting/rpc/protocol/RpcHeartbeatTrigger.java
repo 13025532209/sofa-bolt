@@ -42,14 +42,14 @@ import io.netty.util.TimerTask;
 
 /**
  * Handler for heart beat.
- * 
+ *
  * @author jiangping
  * @version $Id: RpcHeartbeatTrigger.java, v 0.1 2015-9-29 PM3:17:45 tao Exp $
  */
 public class RpcHeartbeatTrigger implements HeartbeatTrigger {
     private static final Logger logger                 = BoltLoggerFactory.getLogger("RpcRemoting");
 
-    /** max trigger times */
+    /** max trigger times 最大触发次数,默认为3次*/
     public static final Integer maxCount               = ConfigManager.tcp_idle_maxtimes();
 
     private static final long   heartbeatTimeoutMillis = 1000;
