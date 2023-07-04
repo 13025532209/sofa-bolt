@@ -56,7 +56,10 @@ public class RandomSelectStrategy implements ConnectionSelectStrategy {
             if (size == 0) {
                 return null;
             }
-
+            /**
+             * 在开启CONN_MONITOR_SWITCH监控时，会从该连接池所有的连接中做一个简单的filter操作，把CONN_SERVICE_STATUS为ON的连接挑选出来，作为选择池。
+             * 如果没有开启监控，那么选择池就是连接池
+             */
             Connection result;
             if (configuration != null && configuration.option(BoltClientOption.CONN_MONITOR_SWITCH)) {
                 List<Connection> serviceStatusOnConnections = new ArrayList<Connection>();

@@ -51,6 +51,10 @@ public class ReconnectManager extends AbstractLifeCycle implements Reconnector {
         startup();
     }
 
+    /**
+     * 整个重连任务的添加是在每一次链接断开的 channelInactive 方法中执行
+     * @param url target url
+     */
     @Override
     public void reconnect(Url url) {
         ensureStarted();
@@ -132,15 +136,25 @@ public class ReconnectManager extends AbstractLifeCycle implements Reconnector {
 
         @Override
         public void run() {
+            /**
+             * 判断重连线程是否开启，这主要会考虑到 ReconnectManager 退出逻辑，在ReconnectManager对象销毁时会中断重连工作的线程
+             */
             while (isStarted()) {
                 long start = -1;
                 ReconnectTask task = null;
                 try {
+                    /**
+                     * 判断时间间隔，因为要控制重连任务的执行速度，所以需要对上一次重连的时间间隔和设定的阈值做比较，
+                     * 这个阈值是1s，如果上一次重连任务的执行速度没有超过1s，就会Sleep线程1s
+                     */
                     if (this.lastConnectTime < HEAL_CONNECTION_INTERVAL) {
                         Thread.sleep(HEAL_CONNECTION_INTERVAL);
                     }
 
                     try {
+                        /**
+                         * 从重连任务的阻塞队列中尝试获取任务，如果没有获取到，线程会阻塞。
+                         */
                         task = ReconnectManager.this.tasks.take();
                     } catch (InterruptedException e) {
                         // ignore
@@ -151,6 +165,9 @@ public class ReconnectManager extends AbstractLifeCycle implements Reconnector {
                     }
 
                     start = System.currentTimeMillis();
+                    /**
+                     * 检查任务是否有效，是否已经取消，如果没有取消，就会执行重连任务。
+                     */
                     if (!canceled.contains(task.url)) {
                         task.run();
                     } else {
@@ -162,7 +179,9 @@ public class ReconnectManager extends AbstractLifeCycle implements Reconnector {
                     if (start != -1) {
                         this.lastConnectTime = System.currentTimeMillis() - start;
                     }
-
+                    /**
+                     * 如果捕捉到异常，不会取消这个重连任务，而是重新将它添加到任务队列里
+                     */
                     if (task != null) {
                         logger.warn("reconnect target: {} failed.", task.url, e);
                         tasks.add(task);

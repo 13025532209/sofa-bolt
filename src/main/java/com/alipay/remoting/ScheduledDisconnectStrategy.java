@@ -91,7 +91,7 @@ public class ScheduledDisconnectStrategy implements ConnectionMonitorStrategy {
                 .entrySet()) {
                 String poolKey = entry.getKey();
                 ConnectionPool pool = FutureTaskUtil.getFutureTaskResult(entry.getValue(), logger);
-
+                // 筛选出服务可用的连接和服务不可用的连接，并保存在两个List
                 List<Connection> serviceOnConnections = new ArrayList<Connection>();
                 List<Connection> serviceOffConnections = new ArrayList<Connection>();
                 for (Connection connection : pool.getAll()) {
