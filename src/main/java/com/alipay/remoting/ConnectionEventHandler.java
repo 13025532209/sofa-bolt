@@ -39,7 +39,7 @@ import io.netty.util.Attribute;
 
 /**
  * Log the channel status event.
- * 
+ *
  * @author jiangping
  * @version $Id: ConnectionEventHandler.java, v 0.1 Oct 10, 2016 2:07:24 PM tao Exp $
  */
@@ -47,14 +47,29 @@ import io.netty.util.Attribute;
 public class ConnectionEventHandler extends ChannelDuplexHandler {
     private static final Logger     logger = BoltLoggerFactory.getLogger("ConnectionEvent");
 
+    /**
+     * 连接管理器：管理连接对象，包括创建、添加、删除、检查是否可用等等
+     */
     private ConnectionManager       connectionManager;
 
+    /**
+     * 连接事件监听器：监听连接事件的触发，然后执行对应的逻辑
+     */
     private ConnectionEventListener eventListener;
 
+    /**
+     * 连接事件执行器：包装后的线程池，用于异步触发连接事件监听器来处理对应的连接事件，值得一提的是，这个线程池只有一个线程
+     */
     private ConnectionEventExecutor eventExecutor;
 
+    /**
+     * 重连管理器：顾名思义，管理重连的Url对象以及执行重连任务
+     */
     private Reconnector             reconnectManager;
 
+    /**
+     * 全局开关：全局的设置，比如是否需要管理连接对象、是否需要执行重连任务等等
+     */
     private Configuration           configuration;
 
     public ConnectionEventHandler() {
@@ -149,6 +164,12 @@ public class ConnectionEventHandler extends ChannelDuplexHandler {
         }
     }
 
+    /**
+     * 用来触发自定义的用户事件
+     * @param ctx
+     * @param event
+     * @throws Exception
+     */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object event) throws Exception {
         if (event instanceof ConnectionEventType) {
@@ -207,6 +228,10 @@ public class ConnectionEventHandler extends ChannelDuplexHandler {
         ctx.channel().close();
     }
 
+    /**
+     * 根据CONN_RECONNECT_SWITCH 的开关状态来判定是否开启重连的任务
+     * @param url
+     */
     private void submitReconnectTaskIfNecessary(Url url) {
         if (configuration.option(BoltClientOption.CONN_RECONNECT_SWITCH)
             && reconnectManager != null) {
@@ -262,7 +287,7 @@ public class ConnectionEventHandler extends ChannelDuplexHandler {
 
     /**
      * Dispatch connection event.
-     * 
+     *
      * @author jiangping
      * @version $Id: ConnectionEventExecutor.java, v 0.1 Mar 4, 2016 9:20:15 PM tao Exp $
      */
@@ -274,7 +299,7 @@ public class ConnectionEventHandler extends ChannelDuplexHandler {
 
         /**
          * Process event.
-         * 
+         *
          * @param runnable Runnable
          */
         public void onEvent(Runnable runnable) {

@@ -32,7 +32,7 @@ public class ConnectionEventListener {
 
     /**
      * Dispatch events.
-     * 
+     * 触发事件
      * @param type ConnectionEventType
      * @param remoteAddress remoting address
      * @param connection Connection
@@ -48,7 +48,7 @@ public class ConnectionEventListener {
 
     /**
      * Add event processor.
-     * 
+     * 添加事件处理器
      * @param type ConnectionEventType
      * @param processor ConnectionEventProcessor
      */
