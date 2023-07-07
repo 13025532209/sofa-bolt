@@ -37,7 +37,7 @@ import com.alipay.remoting.util.RunStateRecordedFutureTask;
  *       <li>each time scheduled, filter connections with {@link Configs#CONN_SERVICE_STATUS_OFF} at first.</li>
  *       <li>then close connections.</li>
  *   </lu>
- *
+ * 这是一个每次调度会执行关闭连接的监控策略->>定时断连
  * @author tsui
  * @version $Id: ScheduledDisconnectStrategy.java, v 0.1 2017-02-21 14:14 tsui Exp $
  */
@@ -101,7 +101,11 @@ public class ScheduledDisconnectStrategy implements ConnectionMonitorStrategy {
                         serviceOffConnections.add(connection);
                     }
                 }
-
+                /**
+                 * 管理服务可用的连接，通过阈值 CONNECTION_THRESHOLD 来执行两种不同的逻辑
+                 *
+                 * 1.服务可用的连接数 > CONNECTION_THRESHOLD ：连接数过多，需要释放资源，此时就会从这些可用链接里随机将一个服务配置成不可用的连接
+                 */
                 if (serviceOnConnections.size() > connectionThreshold) {
                     Connection freshSelectConnect = serviceOnConnections.get(random
                         .nextInt(serviceOnConnections.size()));
@@ -114,7 +118,9 @@ public class ScheduledDisconnectStrategy implements ConnectionMonitorStrategy {
                             poolKey, serviceOnConnections.size(), connectionThreshold);
                     }
                 }
-
+                /**
+                 * 2.取出上一次缓存在该集合中的“不可用”链接，进行关闭
+                 */
                 for (Connection offConn : serviceOffConnections) {
                     if (offConn.isInvokeFutureMapFinish()) {
                         if (offConn.isFine()) {
