@@ -41,6 +41,7 @@ public class RpcConnectionEventHandler extends ConnectionEventHandler {
     /**
      * @see com.alipay.remoting.ConnectionEventHandler#channelInactive(io.netty.channel.ChannelHandlerContext)
      */
+    // Netty在检测到断开连接的情况下会抛出channelInactive事件
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Connection conn = ctx.channel().attr(Connection.CONNECTION).get();
