@@ -49,7 +49,7 @@ public class Connection {
                                                                                                        .getLogger("CommonDefault");
 
     private Channel                                                               channel;
-
+    // 调用
     private final ConcurrentHashMap<Integer, InvokeFuture>                        invokeFutureMap  = new ConcurrentHashMap<Integer, InvokeFuture>(
                                                                                                        4);
 
@@ -66,9 +66,10 @@ public class Connection {
 
     /** Attribute key for protocol */
     public static final AttributeKey<ProtocolCode>                                PROTOCOL         = AttributeKey
-                                                                                                       .valueOf("protocol");
+                                                                                                            .valueOf("protocol");
+    // 版本
     private ProtocolCode                                                          protocolCode;
-
+    // 版本
     /** Attribute key for version */
     public static final AttributeKey<Byte>                                        VERSION          = AttributeKey
                                                                                                        .valueOf("version");

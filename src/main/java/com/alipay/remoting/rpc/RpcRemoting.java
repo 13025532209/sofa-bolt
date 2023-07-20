@@ -39,7 +39,7 @@ import com.alipay.remoting.util.RemotingUtil;
 
 /**
  * Rpc remoting capability.
- * 
+ *
  * @author jiangping
  * @version $Id: RpcRemoting.java, v 0.1 Mar 6, 2016 9:09:48 PM tao Exp $
  */
@@ -77,7 +77,7 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Oneway rpc invocation.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param addr
      * @param request
      * @param invokeContext
@@ -94,7 +94,7 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Oneway rpc invocation.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param url
      * @param request
      * @param invokeContext
@@ -108,10 +108,10 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Oneway rpc invocation.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param conn
      * @param request
-     * @param invokeContext 
+     * @param invokeContext
      * @throws RemotingException
      */
     public void oneway(final Connection conn, final Object request,
@@ -126,14 +126,14 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Synchronous rpc invocation.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param addr
      * @param request
      * @param invokeContext
      * @param timeoutMillis
      * @return
-     * @throws RemotingException 
-     * @throws InterruptedException 
+     * @throws RemotingException
+     * @throws InterruptedException
      */
     public Object invokeSync(final String addr, final Object request,
                              final InvokeContext invokeContext, final int timeoutMillis)
@@ -146,10 +146,10 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Synchronous rpc invocation.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param url
      * @param request
-     * @param invokeContext 
+     * @param invokeContext
      * @param timeoutMillis
      * @return
      * @throws RemotingException
@@ -163,10 +163,10 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Synchronous rpc invocation.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param conn
      * @param request
-     * @param invokeContext 
+     * @param invokeContext
      * @param timeoutMillis
      * @return
      * @throws RemotingException
@@ -190,10 +190,10 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Rpc invocation with future returned.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param addr
      * @param request
-     * @param invokeContext 
+     * @param invokeContext
      * @param timeoutMillis
      * @return
      * @throws RemotingException
@@ -210,7 +210,7 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Rpc invocation with future returned.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param url
      * @param request
      * @param invokeContext
@@ -228,7 +228,7 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Rpc invocation with future returned.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param conn
      * @param request
      * @param invokeContext
@@ -251,10 +251,10 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Rpc invocation with callback.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param addr
      * @param request
-     * @param invokeContext 
+     * @param invokeContext
      * @param invokeCallback
      * @param timeoutMillis
      * @throws RemotingException
@@ -271,7 +271,7 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Rpc invocation with callback.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param url
      * @param request
      * @param invokeContext
@@ -289,10 +289,10 @@ public abstract class RpcRemoting extends BaseRemoting {
     /**
      * Rpc invocation with callback.<br>
      * Notice! DO NOT modify the request object concurrently when this method is called.
-     * 
+     *
      * @param conn
      * @param request
-     * @param invokeContext 
+     * @param invokeContext
      * @param invokeCallback
      * @param timeoutMillis
      * @throws RemotingException
@@ -309,7 +309,7 @@ public abstract class RpcRemoting extends BaseRemoting {
 
     /**
      * Convert application request object to remoting request command.
-     * 
+     *
      * @param request
      * @param conn
      * @param timeoutMillis
@@ -350,6 +350,7 @@ public abstract class RpcRemoting extends BaseRemoting {
         command.setTimeout(timeoutMillis);
         command.setRequestClass(request.getClass().getName());
         command.setInvokeContext(invokeContext);
+        // 序列化request
         command.serialize();
         logDebugInfo(command);
         return command;

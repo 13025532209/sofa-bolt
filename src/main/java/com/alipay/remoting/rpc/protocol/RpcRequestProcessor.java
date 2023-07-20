@@ -75,6 +75,7 @@ public class RpcRequestProcessor extends AbstractRemotingProcessor<RpcRequestCom
     @Override
     public void process(RemotingContext ctx, RpcRequestCommand cmd, ExecutorService defaultExecutor)
                                                                                                     throws Exception {
+        // 反序列化
         if (!deserializeRequestCommand(ctx, cmd, RpcDeserializeLevel.DESERIALIZE_CLAZZ)) {
             return;
         }
@@ -91,6 +92,7 @@ public class RpcRequestProcessor extends AbstractRemotingProcessor<RpcRequestCom
         ctx.setTimeoutDiscard(userProcessor.timeoutDiscard());
 
         // to check whether to process in io thread
+        // 如果返回 true，表示，所有的序列化及业务逻辑都在 IO 线程中执行
         if (userProcessor.processInIOThread()) {
             if (!deserializeRequestCommand(ctx, cmd, RpcDeserializeLevel.DESERIALIZE_ALL)) {
                 return;
@@ -117,6 +119,7 @@ public class RpcRequestProcessor extends AbstractRemotingProcessor<RpcRequestCom
 
         // Till now, if executor still null, then try default
         if (executor == null) {
+            // 用户没有使用线程池隔离策略，那么所有的反序列化和业务逻辑则都在默认（Server默认或者业务默认）线程池执行
             executor = (this.getExecutor() == null ? defaultExecutor : this.getExecutor());
         }
 

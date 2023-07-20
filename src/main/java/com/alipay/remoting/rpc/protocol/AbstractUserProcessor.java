@@ -81,6 +81,7 @@ public abstract class AbstractUserProcessor<T> extends AbstractLifeCycle impleme
      *
      * @see UserProcessor#processInIOThread()
      */
+    // 用于定义是否在 IO 线程执行所有任务
     @Override
     public boolean processInIOThread() {
         return false;

@@ -187,8 +187,10 @@ public abstract class AbstractConnectionFactory implements ConnectionFactory {
         Connection conn = new Connection(channel, ProtocolCode.fromBytes(url.getProtocol()),
             url.getVersion(), url);
         if (channel.isActive()) {
+            // 触发自定义的用户事件
             channel.pipeline().fireUserEventTriggered(ConnectionEventType.CONNECT);
         } else {
+            // 触发自定义的用户事件
             channel.pipeline().fireUserEventTriggered(ConnectionEventType.CONNECT_FAILED);
             throw new RemotingException("create connection, but channel is inactive, url is "
                                         + url.getOriginUrl());

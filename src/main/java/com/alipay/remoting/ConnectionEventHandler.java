@@ -165,7 +165,7 @@ public class ConnectionEventHandler extends ChannelDuplexHandler {
     }
 
     /**
-     * 用来触发自定义的用户事件
+     * 该方法是在连接建立的最初被触发的,用来触发自定义的用户事件
      * @param ctx
      * @param event
      * @throws Exception
@@ -198,6 +198,10 @@ public class ConnectionEventHandler extends ChannelDuplexHandler {
                 remoteAddress, eventType.name());
 
             switch (eventType) {
+                /**
+                 * 在判定是 CONNECT 事件后，通过attr得到绑定在Channel的Connection对象，然后就同
+                 * channelInactive 方法一样，触发 CONNECT 事件异步执行对应的处理器逻辑
+                 */
                 case CONNECT:
                     onEvent(connection, connection.getUrl().getOriginUrl(),
                         ConnectionEventType.CONNECT);

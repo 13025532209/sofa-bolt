@@ -364,6 +364,7 @@ public class RpcServer extends AbstractRemotingServer {
                 } else {
                     new Connection(channel, url);
                 }
+                // 触发自定义的用户事件
                 channel.pipeline().fireUserEventTriggered(ConnectionEventType.CONNECT);
             }
         });

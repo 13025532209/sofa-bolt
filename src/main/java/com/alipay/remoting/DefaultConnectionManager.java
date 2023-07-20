@@ -73,6 +73,7 @@ public class DefaultConnectionManager extends AbstractLifeCycle implements Conne
     /**
      * connection pool select strategy
      */
+    // 通过注入的选择策略进行 Connection 连接的选择
     protected ConnectionSelectStrategy                                          connectionSelectStrategy;
 
     /**
@@ -83,6 +84,7 @@ public class DefaultConnectionManager extends AbstractLifeCycle implements Conne
     /**
      * connection factory
      */
+    // 通过工厂创建 Connection 连接对象
     protected ConnectionFactory                                                 connectionFactory;
 
     /**
